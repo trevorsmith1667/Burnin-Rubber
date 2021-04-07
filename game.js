@@ -32,7 +32,7 @@ function startGame(){
     animationGame = requestAnimationFrame(playGame);
     player = {
         ele: div,
-        speed: 1,
+        speed: 3,
         lives: 3,
         score: 0,
         neededPasses: 10,
@@ -73,8 +73,23 @@ function playGame(){
     if(gamePlay){
         updateDash()
         if (keys.ArrowUp){
-            console.log(player.ele.x)
+            player.ele.y -= 1;
+            player.speed = player.speed < 20 ? (player.speed + 0.05) : 20;
         }
+        if(keys.ArrowDown){
+            player.ele.y += 1;
+            player.speed = player.speed > 0 ? (player.speed - 0.02) : 0;
+        }
+        if(keys.ArrowRight){
+            player.ele.x += (player.speed/4);
+        }
+        if(keys.ArrowLeft){
+            player.ele.x -= (player.speed/4);
+        }
+        //move playerCar
+
+        player.ele.style.top = player.ele.y + 'px';
+        player.ele.style.left = player.ele.x + 'px';
     }
 animationGame = requestAnimationFrame(playGame)
 }
