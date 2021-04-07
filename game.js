@@ -10,8 +10,10 @@ document.addEventListener('keydown', pressKeyOn);
 document.addEventListener('keyup', pressKeyOff);
 
 
-let animationGame =requestAnimationFrame(playGame);
+//Game variables
+let animationGame = requestAnimationFrame(playGame);
 let gamePlay = false;
+let player 
 let keys = {
     arrowUp: false, 
     arrowDown: false,
@@ -19,14 +21,21 @@ let keys = {
     arrowRight: false
 
 }
-//Game variables
 function startGame(){
+    console.log(gamePlay);
+    startButton.style.display='none'
     var div = document.createElement('div');
     div.setAttribute('class', 'playerCar');
     div.x = 250;
     div.y = 500
     container.appendChild(div);
     gamePlay = true;
+    player = {
+        speed: 1,
+        lives: 3,
+        gameScore: 0,
+        neededPasses: 10
+    }
 }
 
 function pressKeyOn(){
@@ -37,9 +46,13 @@ function pressKeyOff(){
 
 }
 
+function updateDash(){
+    console.log(player)
+}
+
 function playGame(){
     if(gamePlay){
-    console.log('game in play');
-    animationGame = requestAnimationFrame(playGame)
+    updateDash()
     }
+animationGame = requestAnimationFrame(playGame)
 }
