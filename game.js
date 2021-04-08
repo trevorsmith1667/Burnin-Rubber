@@ -41,10 +41,10 @@ function startGame(){
     startBoard();
 }
 function startBoard(){
-    for(let x = 0;x< 13; x++){
+    for(let x = 0; x < 13; x++){
         let div = document.createElement('div')
         div.setAttribute('class', 'road')
-        div.style.top = (x*50) + 'px';
+        div.style.top = (x * 50) + 'px';
         container.appendChild(div)
     }
 }
@@ -66,18 +66,33 @@ function updateDash(){
     // console.log(player)
     score.innerHTML = player.score;
     lives.innerHTML = player.lives;
-    speedo.innerHTML = player.speed;
+    speedo.innerHTML = Math.round(player.speed * 13);
+}
+
+function moveRoad(){
+    let tempRoad = document.querySelectorAll('.road')
+    console.log(tempRoad)
+    let prevRoad = tempRoad[0].offsetLeft
+    for(let x = 0; x < tempRoad.length; x++){
+        let num = tempRoad[x].offsetTop + player.speed
+        if(num > 600){
+            num = num - 650;
+        }
+        tempRoad[x].style.top = num + 'px';
+    }
 }
 
 function playGame(){
     if(gamePlay){
         updateDash()
+        //movement
+        moveRoad();
         if (keys.ArrowUp){
-            player.ele.y -= 1;
+           if (player.ele.y > 400) player.ele.y -= 1;
             player.speed = player.speed < 20 ? (player.speed + 0.05) : 20;
         }
         if(keys.ArrowDown){
-            player.ele.y += 1;
+            if (player.ele.y < 500) {player.ele.y += 1};
             player.speed = player.speed > 0 ? (player.speed - 0.02) : 0;
         }
         if(keys.ArrowRight){
@@ -91,5 +106,5 @@ function playGame(){
         player.ele.style.top = player.ele.y + 'px';
         player.ele.style.left = player.ele.x + 'px';
     }
-animationGame = requestAnimationFrame(playGame)
+    animationGame = requestAnimationFrame(playGame)
 }
