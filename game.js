@@ -11,6 +11,7 @@ document.addEventListener('keyup', pressKeyOff);
 
 
 //Game variables
+let animationGame
 let gamePlay = false;
 let player 
 let keys = {
@@ -32,7 +33,7 @@ function startGame(){
     animationGame = requestAnimationFrame(playGame);
     player = {
         ele: div,
-        speed: 3,
+        speed: 9,
         lives: 3,
         score: 0,
         neededPasses: 10,
@@ -76,11 +77,11 @@ function moveRoad(){
     let prevWidth = tempRoad[0].width;
     const pSpeed = player.speed;
     for(let x = 0; x < tempRoad.length; x++){
-        let num = tempRoad[x].offsetTop + pSpeed
+        let num = tempRoad[x].offsetTop + pSpeed;
         if(num > 600){
             num = num - 650;
             let mover = prevRoad + (Math.floor(Math.random() * 6) - 3);
-            let roadWidth = (Math.floor(Math.random()* 11) - 5) + prevWidth
+            let roadWidth = (Math.floor(Math.random()* 11) - 5) + prevWidth;
             if (roadWidth < 200) roadWidth = 200;
             if (roadWidth > 400) roadWidth = 400;
             if (mover < 100) mover = 100;
@@ -93,7 +94,7 @@ function moveRoad(){
         tempRoad[x].style.top = num + 'px';
     }
 }
-// road needs work 
+
 function playGame(){
     if(gamePlay){
         updateDash()
@@ -105,13 +106,13 @@ function playGame(){
         }
         if(keys.ArrowDown){
             if (player.ele.y < 500) {player.ele.y += 1};
-            player.speed = player.speed > 0 ? (player.speed - 0.02) : 0;
+            player.speed = player.speed > 0 ? (player.speed - 0.2) : 0;
         }
         if(keys.ArrowRight){
-            player.ele.x += (player.speed/4);
+            player.ele.x += (player.speed / 4);
         }
         if(keys.ArrowLeft){
-            player.ele.x -= (player.speed/4);
+            player.ele.x -= (player.speed / 4);
         }
         //move playerCar
 
