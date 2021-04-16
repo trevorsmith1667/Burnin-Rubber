@@ -74,19 +74,21 @@ function moveRoad(){
     console.log(tempRoad)
     let prevRoad = tempRoad[0].offsetLeft;
     let prevWidth = tempRoad[0].width;
-    let pSpeed = player.speed;
+    const pSpeed = player.speed;
     for(let x = 0; x < tempRoad.length; x++){
         let num = tempRoad[x].offsetTop + pSpeed
         if(num > 600){
             num = num - 650;
-            let mover = tempRoad[x].offsetLeft + (Math.floor(Math.random() + 6)- 3);
+            let mover = prevRoad + (Math.floor(Math.random() * 6) - 3);
             let roadWidth = (Math.floor(Math.random()* 11) - 5) + prevWidth
             if (roadWidth < 200) roadWidth = 200;
             if (roadWidth > 400) roadWidth = 400;
             if (mover < 100) mover = 100;
             if (mover > 600) mover = 600;
             tempRoad[x].style.left = mover + "px";
-            tempRoad[x].style.width = roadWidth + "px"
+            tempRoad[x].style.width = roadWidth + "px";
+            prevRoad = tempRoad[x].offsetLeft;
+            prevWidth = tempRoad[x].width;
         }
         tempRoad[x].style.top = num + 'px';
     }
