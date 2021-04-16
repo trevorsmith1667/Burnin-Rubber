@@ -80,10 +80,10 @@ function moveRoad(){
         if(num > 600){
             num = num - 650;
             let mover = tempRoad[x].offsetLeft + (Math.floor(Math.random() + 6)- 3);
-            let roadWidth = (Math.floor(Math.random()* 11) - 5) 
+            let roadWidth = (Math.floor(Math.random()* 11) - 5) + prevWidth
             if (roadWidth < 200) roadWidth = 200;
             if (roadWidth > 400) roadWidth = 400;
-            if (mover < 100) mover = 100
+            if (mover < 100) mover = 100;
             if (mover > 600) mover = 600;
             tempRoad[x].style.left = mover + "px";
             tempRoad[x].style.width = roadWidth + "px"
