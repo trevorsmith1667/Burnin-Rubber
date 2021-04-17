@@ -71,7 +71,7 @@ function moveRoad(){
     let tempRoad = document.querySelectorAll('.road')
     let prevRoad = tempRoad[0].offsetLeft;
     let prevWidth = tempRoad[0].offsetWidth;
-    const pSpeed = player.speed;
+    const pSpeed = Math.floor(player.speed);
     for(let x = 0; x < tempRoad.length; x++){
         let num = tempRoad[x].offsetTop + pSpeed;
         if(num > 600){
@@ -114,7 +114,11 @@ function playGame(){
         // check if on road
         if ((player.ele.x + 40) < roadParams.left || 
         (player.ele.x > (roadParams.left + roadParams.width))){
+            if (player.ele.y < 500) { player.ele.y += 1 };
+            player.ele.y += + 1;
+            player.speed = player.speed > 0 ? (player.speed - 0.2) : 1;
             console.log('OFFROAD')
+
         }
         //move playerCar
 
