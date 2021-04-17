@@ -123,3 +123,5 @@ function playGame(){
     }
     animationGame = requestAnimationFrame(playGame)
 }
+
+// add space background, spaceship functionality etc.
