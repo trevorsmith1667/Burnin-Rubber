@@ -39,6 +39,28 @@ function startGame(){
         roadWidth: 250,
     }
     startBoard();
+    setupOtherCars(10);
+}
+
+function setupOtherCars(num){
+    for(let x = 0; x < num; x++){
+        let temp = "enemy" + (x + 1);
+        let div = document.createElement('div');
+        div.innerHTML = (x + 1)
+        div.innerHTML.setAttribute('class', "enemy");
+        div.setAttribute('id', temp)
+        div.style.backgroundColor = randomColor();
+        makeEnemy(div);
+        container.appendChild(div)    
+    }
+}
+
+function makeEnemy(e){
+    let tempRoad = document.querySelector('.road');
+        e.style.left = tempRoad.offsetLeft + 
+            Math.ceil(Math.random() * tempRoad.offsetWidth) - 30 +'px';
+        e.style.top = Math.ceil(Math.random() * -400) + 'px';
+        e.speed = Math.ceil(Math.random() * 17) + 2;
 }
 function startBoard(){
     for(let x = 0; x < 13; x++){
