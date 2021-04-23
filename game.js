@@ -129,3 +129,4 @@ function playGame(){
 }
 
 // add space background, spaceship functionality etc.
+//next step add obstacles
