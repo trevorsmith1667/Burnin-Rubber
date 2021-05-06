@@ -120,6 +120,17 @@ function moveRoad(){
     }
     return {'w': prevWidth, 'left' : prevRoad};
 }
+
+function collision(a,b){
+    let aRect = a.getBoundingClientRect();
+    let bRect = b.getBoundingClientRect();
+    //console.log(aRect)
+    return!(
+        (aRect.bottom < bRect.top) || (aRect.top > bRect.bottom) ||
+        (aRect.right < bRect.left) || (aRect.left > bRect.right)
+    )
+}
+
 function moveEnemies(){
     let tempEnemy = document.querySelectorAll('.enemy');
     for(let i = 0; i < tempEnemy.length; i++){
@@ -128,6 +139,8 @@ function moveEnemies(){
             makeEnemy(tempEnemy[i]);
         }else {
             tempEnemy[i].style.top = y + 'px'
+            let collide = collision(tempEnemy[i], player.ele)
+            console.log(collide)
         }
     }
 }
