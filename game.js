@@ -47,12 +47,19 @@ function setupOtherCars(num){
         let temp = "enemy" + (x + 1);
         let div = document.createElement('div');
         div.innerHTML = (x + 1)
-        div.innerHTML.setAttribute('class', "enemy");
+        div.setAttribute('class', "enemy");
         div.setAttribute('id', temp)
         div.style.backgroundColor = randomColor();
         makeEnemy(div);
         container.appendChild(div)    
     }
+}
+function randomColor(){
+    function c(){
+        let hex = Math.floor(Math.random()*256).toString(16);
+        return('0'+ String(hex)).substr(-2);
+    }
+    return '#'+c()+c()+c();
 }
 
 function makeEnemy(e){
