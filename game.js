@@ -22,6 +22,7 @@ let keys = {
     
 }
 function startGame(){
+    container.innerHTML = '';
     startButton.style.display='none'
     var div = document.createElement('div');
     div.setAttribute('class', 'playerCar');
@@ -32,10 +33,10 @@ function startGame(){
     animationGame = requestAnimationFrame(playGame);
     player = {
         ele: div,
-        speed: 9,
+        speed: 0,
         lives: 3,
         score: 0,
-        neededPasses: 10,
+        neededPasses: 3,
         roadWidth: 250,
         gameOverCount: 0
     }
@@ -143,6 +144,12 @@ function moveEnemies(){
       }
         let y = tempEnemy[i].offsetTop + player.speed - tempEnemy[i].speed
         if(y > 2000 || y < -2000){
+            if(y > 2000){
+                player.score++;
+                if(player.score > player.neededPasses){
+                    gameOverPlay();
+                }
+            }
             makeEnemy(tempEnemy[i]);
         }else {
             tempEnemy[i].style.top = y + 'px'
@@ -159,22 +166,27 @@ function moveEnemies(){
     }
 }
 
+function gameOverPlay(){
+    let div = document.createElement('div');
+    div.setAttribute("class", "road");
+    div.style.top = '0px';
+    div.style.width = '250px';
+    div.style.backgroundColor = 'red'
+    div.innerHTML = 'FINISH'
+    div.style.fontSize = '3em';
+    container.appendChild(div);
+    player.gameOverCount = 12;
+    player.speed = 0;
+}
+
 function playGame(){
-    if(player.gameOverCount > 0){
-        player.gameOverCount--;
-        player.y = (player.y > 60) ? player.y -30 : 60;
-        if(player.gameOverCount == 0){
-            gamePlay = false;
-            startButton.style.display = "block";
-        }
-    }
     if(gamePlay){
         updateDash()
         //movement
-      let roadParams = moveRoad();
-      moveEnemies();
+        let roadParams = moveRoad();
+        moveEnemies();
         if (keys.ArrowUp){
-           if (player.ele.y > 400) player.ele.y -= 1;
+            if (player.ele.y > 400) player.ele.y -= 1;
             player.speed = player.speed < 20 ? (player.speed + 0.05) : 20;
         }
         if(keys.ArrowDown){
@@ -194,14 +206,23 @@ function playGame(){
             player.ele.y += + 1;
             player.speed = player.speed > 0 ? (player.speed - 0.2) : 1;
             console.log('OFFROAD')
-
+            
         }
         //move playerCar
-
+        
         player.ele.style.top = player.ele.y + 'px';
         player.ele.style.left = player.ele.x + 'px';
     }
     animationGame = requestAnimationFrame(playGame)
+    if(player.gameOverCount > 0){
+        player.gameOverCount--;
+        player.y = (player.y > 60) ? player.y -30 : 60;
+        if(player.gameOverCount == 0){
+            gamePlay = false;
+            cancelAnimationFrame(animationGame)
+            startButton.style.display = "block";
+        }
+    }
 }
 
 // add space background, spaceship functionality etc.
