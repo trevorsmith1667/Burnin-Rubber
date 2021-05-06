@@ -49,7 +49,6 @@ function setupOtherCars(num){
         div.innerHTML = (x + 1)
         div.setAttribute('class', "enemy");
         div.setAttribute('id', temp)
-        div.style.backgroundColor = randomColor();
         makeEnemy(div);
         container.appendChild(div)    
     }
@@ -65,9 +64,10 @@ function randomColor(){
 function makeEnemy(e){
     let tempRoad = document.querySelector('.road');
         e.style.left = tempRoad.offsetLeft + 
-            Math.ceil(Math.random() * tempRoad.offsetWidth) - 30 +'px';
+        Math.ceil(Math.random() * tempRoad.offsetWidth) - 30 +'px';
         e.style.top = Math.ceil(Math.random() * -400) + 'px';
         e.speed = Math.ceil(Math.random() * 17) + 2;
+        e.style.backgroundColor = randomColor();
 }
 function startBoard(){
     for(let x = 0; x < 13; x++){
@@ -120,12 +120,24 @@ function moveRoad(){
     }
     return {'w': prevWidth, 'left' : prevRoad};
 }
+function moveEnemies(){
+    let tempEnemy = document.querySelectorAll('.enemy');
+    for(let i = 0; i < tempEnemy.length; i++){
+        let y = tempEnemy[i].offsetTop + player.speed - tempEnemy[i].speed
+        if(y > 2000 || y < -2000){
+            makeEnemy(tempEnemy[i]);
+        }else {
+            tempEnemy[i].style.top = y + 'px'
+        }
+    }
+}
 
 function playGame(){
     if(gamePlay){
         updateDash()
         //movement
       let roadParams = moveRoad();
+      moveEnemies();
         if (keys.ArrowUp){
            if (player.ele.y > 400) player.ele.y -= 1;
             player.speed = player.speed < 20 ? (player.speed + 0.05) : 20;
