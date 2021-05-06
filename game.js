@@ -37,6 +37,7 @@ function startGame(){
         score: 0,
         neededPasses: 10,
         roadWidth: 250,
+        gameOverCount: 0
     }
     startBoard();
     setupOtherCars(10);
@@ -90,7 +91,6 @@ function pressKeyOff(event){
 }
 
 function updateDash(){
-    // console.log(player)
     score.innerHTML = player.score;
     lives.innerHTML = player.lives;
     speedo.innerHTML = Math.round(player.speed * 13);
@@ -121,10 +121,9 @@ function moveRoad(){
     return {'w': prevWidth, 'left' : prevRoad};
 }
 
-function collision(a,b){
+function isCollision(a,b){
     let aRect = a.getBoundingClientRect();
     let bRect = b.getBoundingClientRect();
-    //console.log(aRect)
     return!(
         (aRect.bottom < bRect.top) || (aRect.top > bRect.bottom) ||
         (aRect.right < bRect.left) || (aRect.left > bRect.right)
@@ -134,18 +133,41 @@ function collision(a,b){
 function moveEnemies(){
     let tempEnemy = document.querySelectorAll('.enemy');
     for(let i = 0; i < tempEnemy.length; i++){
+      for(let j = 0; j < tempEnemy.length; j++){
+          if(i != j && carCrash(tempEnemy[i], tempEnemy[j])){
+              tempEnemy[j].style.top = (tempEnemy[j].offsetTop + 20) + 'px';
+              tempEnemy[i].style.top = (tempEnemy[i].offsetTop - 20) + 'px';
+              tempEnemy[j].style.left = (tempEnemy[j].offsetLeft - 20) + 'px';
+              tempEnemy[i].style.left = (tempEnemy[i].offsetLeft + 20) + 'px';  
+          }
+      }
         let y = tempEnemy[i].offsetTop + player.speed - tempEnemy[i].speed
         if(y > 2000 || y < -2000){
             makeEnemy(tempEnemy[i]);
         }else {
             tempEnemy[i].style.top = y + 'px'
-            let collide = collision(tempEnemy[i], player.ele)
-            console.log(collide)
+            let carCrash = isCollision(tempEnemy[i], player.ele)
+            if(carCrash){
+                player.speed = 0;
+                player.lives --;
+                if(player.lives < 1){
+                  player.gameOverCount = 1;     
+                }
+                makeEnemy(tempEnemy[i]);
+            }
         }
     }
 }
 
 function playGame(){
+    if(player.gameOverCount > 0){
+        player.gameOverCount--;
+        player.y = (player.y > 60) ? player.y -30 : 60;
+        if(player.gameOverCount == 0){
+            gamePlay = false;
+            startButton.style.display = "block";
+        }
+    }
     if(gamePlay){
         updateDash()
         //movement
